@@ -151,7 +151,7 @@ export default function YouTubeDownloader() {
       setLoading(true);
       console.log('Iniciando la descarga del video...');
       
-      const response = await fetch('http://localhost:3000/download', {
+      const response = await fetch('/.netlify/functions/download', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

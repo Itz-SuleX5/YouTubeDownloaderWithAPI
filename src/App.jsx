@@ -163,18 +163,20 @@ export default function YouTubeDownloader() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
+      const data = await response.json();
+      if (!data.downloadUrl) {
+        throw new Error('No download URL found');
+      }
+
+      // Crear un enlace temporal para la descarga
       const link = document.createElement('a');
-      link.href = downloadUrl;
+      link.href = data.downloadUrl;
       link.download = `youtube_video_${extractVideoId(videoUrl)}.mp4`;
-      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
       
-      console.log('Descarga completada');
+      console.log('Descarga iniciada');
       setLoading(false);
     } catch (error) {
       console.error('Error durante la descarga:', error);
